@@ -33,7 +33,7 @@ public class ArrayListOfReports {
 			reportsList.add(r);
 			}
 		}
-		
+		Collections.sort(reportsList, new SortByStartTime());
 	}
 	
 	/**Complexity of 1. Every statement just runs once, no loops.
