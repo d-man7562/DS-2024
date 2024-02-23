@@ -15,6 +15,7 @@ public class ArrayListOfReports {
 	 * formated .csv file. The arrayList is filled with reports from a given state
 	 * and county, and is sorted by start time in ascending order.
 	 * @author - Adam Taddia
+  	 * @version 2/23/2024
 	 * @param filePath - the path to the .csv of reports
 	 * @param state - the desired state that all reports must be from
 	 * @param county - the desired county that all reports must be from
@@ -34,6 +35,7 @@ public class ArrayListOfReports {
 			}
 		}
 		Collections.sort(reportsList, new SortByStartTime());
+		addtoQueueOfReports(reportsList);
 	}
 	
 	/**Complexity of 1. Every statement just runs once, no loops.
@@ -42,7 +44,8 @@ public class ArrayListOfReports {
 	 * This method parses the strings to find the year, month, day, hour, minute, and second in the string.
 	 * It then populates an array of 6 ints with these values, and this array is returned.
 	 * The returned array, timeAsIntArray, is used to create the time field in a report object.
-	 * 
+	 * @param timeAsString
+  	 * @return timeAsIntArray
 	*/
 	public static int[] timeStringToInts(String timeAsString) {//this takes a string in the format used for the time of
 		int year = Integer.parseInt(timeAsString.substring(0, 4));//the incident and turns it into an array of ints, passed by pointer
@@ -54,7 +57,12 @@ public class ArrayListOfReports {
 		int timeAsIntArray[] = {year, month, day, hour, minute, second};
 		return timeAsIntArray;
 	}
-	
+
+	/**
+	*Constructor for Report
+ 	*@param scn Scanner
+  	*@return Report r
+	*/
 	public static Report createReport(Scanner scn) {//a method for creating a report
 		scn.useDelimiter(",|\\n");
 		String ID = scn.next();
@@ -75,8 +83,13 @@ public class ArrayListOfReports {
 		if (scn.next().substring(0,1).equals("N")) {IsDay = false;} else {IsDay = true;	}
 		Report r = new Report(ID, Severity, StartTime, EndTime, Street, City, County, State, Temperature, Humidity, Visibility, Weather, AtCrossing, IsDay);
 		return r;	}
+
 	
-	
+	/**
+	*finds amount of Reports
+ 	*@param scn Scanner
+	*@return reportCount
+	*/
 	public static int findReportCount(Scanner scn){//passes the scanner as a parameter to get the number of reports
 		long startTime = System.nanoTime();
 		int reportCount = -1;//starts at -1 to account for first line
