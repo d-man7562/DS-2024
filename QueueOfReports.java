@@ -4,31 +4,38 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.math.BigInteger;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Calendar;
 
+/**
+*QueueOfReports - Creates an ArrayDeque that allocates reports of the same day and then "processes" 
+*them by subtracting an abstract amount of time from the Counters variable and then removing specified reports from
+*the arrayDeque
+*@author Domenic Mancuso
+*@version 2/23/2024
+*/
 public class QueueOfReports {
-	//we already have time sorted google how to sort by dya
-	//remove from araylist and then add to queue
-	//then remove everything from queue and do it agian,
-	//check and 
-	//index 0, index length-1
-	// for loop from first date to last date
-	//add to queue method and process queue method
 
 			 int Counters = 24*60*5;
 	private Queue<Report> reportArrayDeque;
 	private ArrayList<Report> arrayList;
+	/**
+	*QueueOfReports constructor
+ 	*@param arrayList of reports
+  	*creates an arrayDeque to process reports from arrayList
+	*/
 	public QueueOfReports(ArrayList<Report>arrayList) {
 		this.arrayList = arrayList;
 		reportArrayDeque = new ArrayDeque<Report>();
 		}
-	
+	/**
+	*addtoQueueOfReports - transfers reports from ArrayList into arrayDeque that take place in the same day, then removing the transferred reports from the arrayList
+ 	*param reportsList - arrayList of Reports
+	*@throws ParseException
+ 	*
+	*/
 void addtoQueueOfReports(ArrayList<Report>reportsList) throws ParseException {
 	Queue<Report>q = new ArrayDeque<Report>();
 	
@@ -52,7 +59,12 @@ void addtoQueueOfReports(ArrayList<Report>reportsList) throws ParseException {
 
 		
 		
-		
+		/**
+		*processQueue - for all reports in the Queue, subtract specified number from Counters variable
+  		*if Counters = 0, stop and notify user that Counters has run out.
+    		*@param q - Queue of Reports
+		*
+		*/
 		void processQueue(Queue<Report> q) {
 			
 		for (Report r : q) {
