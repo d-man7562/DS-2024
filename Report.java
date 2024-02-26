@@ -1,11 +1,19 @@
 package accidentPack;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Report implements Comparable<Report>{
 	//DECEMBER 21 = winter start MARCH 21 = winter end
 	private String ID;
 	private int severity;
-	private int startTime[] = new int[6]; //year,month,day,hour,minute,second
-	private int endTime[] = new int[6]; //year,month,day,hour,minute,second
+	
+	private LocalTime startTime; //year,month,day
+	private LocalTime endTime; //year,month,day
+	
+	private LocalDate startDate; //hour,minute,second
+	private LocalDate endDate; //hour,minute,second
+	
 	private int startTimeAsSeconds = 0;//seconds passed the beginning of 2021, because that's the earliest date
 	private int endTimeAsSeconds = 0;
 	private String street;
@@ -33,18 +41,43 @@ public class Report implements Comparable<Report>{
 	public void setSeverity(int severity) {
 		this.severity = severity;
 	}
-	public int[] getStartTime() {
+	
+	
+	
+	
+	
+	public LocalTime getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(int[] startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
-	public int[] getEndTime() {
+	public LocalTime getEndTime() {
 		return endTime;
 	}
-	public void setEndTime(int[] endTime) {
+	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
 	}
+	
+	
+	
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+	public void setEndTime(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+	
+	
+	
+	
+	
 	public int getStartTimeAsSeconds() {
 		return startTimeAsSeconds;
 	}
@@ -145,8 +178,8 @@ public class Report implements Comparable<Report>{
 	public void print() {
 		System.out.print(this.ID + ", ");
 		System.out.print(this.severity + ", ");
-		System.out.print(this.startTime[0] + "-" + this.startTime[1] + "-" + this.startTime[2] + " " + this.startTime[3] + ":" + this.startTime[4] + ":" + this.startTime[5] + ", ");
-		System.out.print(this.endTime[0] + "-" + this.endTime[1] + "-" + this.endTime[2] + " " + this.endTime[3] + ":" + this.endTime[4] + ":" + this.endTime[5] + ", ");
+
+
 		System.out.print(this.street + ", ");
 		System.out.print(this.city + ", ");
 		System.out.print(this.county + ", ");
@@ -159,11 +192,13 @@ public class Report implements Comparable<Report>{
 		System.out.println(this.isDay);
 	}
 	
-	public Report(String ID, int Severity, int[] StartTime, int[] EndTime, String Street,
+	public Report(String ID, int Severity, LocalDate StartDate, LocalDate EndDate, LocalTime StartTime, LocalTime EndTime, String Street,
 			String City, String County, String State, double Temperature, double Humidity, double Visibility,
 			String Weather, boolean AtCrossing, boolean IsDay) {
 		this.ID = ID;
 		this.severity = Severity;
+		this.startDate = StartDate;
+		this.endDate = EndDate;
 		this.startTime = StartTime;
 		this.endTime = EndTime;
 		this.street = Street;
@@ -177,72 +212,6 @@ public class Report implements Comparable<Report>{
 		this.atCrossing = AtCrossing;
 		this.isDay = IsDay;
 		
-		/**
-		 * This whole scheme is REALLY ineffecient and messy but it's all I could
-		 * think of to get the lambda expression for comparing time to work. I can just compare the
-		 * years, months, days, hours, minutes, or seconds, I had to compare them all
-		 */
-		this.startTimeAsSeconds += ((startTime[0]-2021)*365*24*60*60);//adds a number of seconds for the year
-		switch (startTime[1]) {//adds seconds for the mo
-			case 1:
-				startTimeAsSeconds += 0;
-				break;
-			case 2:
-				startTimeAsSeconds += (31*24*60*60);//In february, add all of january's days
-				break;	
-			case 3:
-				startTimeAsSeconds += ((31 + 28)*24*60*60);//in march, add all of february and january's days
-				break;
-			case 4:
-				startTimeAsSeconds += ((31 + 28 + 31)*24*60*60);//in april, add all of march's, february's, and january's days, etc
-				break;
-			case 5:
-				startTimeAsSeconds += ((31 + 28 + 31 + 30)*24*60*60);
-				break;
-			case 6:
-				startTimeAsSeconds += ((31 + 28 + 31 + 30 + 31)*24*60*60);
-				break;
-			case 7:
-				startTimeAsSeconds += ((31 + 28 + 31 + 30 + 31 + 30)*24*60*60);
-				break;
-			case 8:
-				startTimeAsSeconds += ((31 + 28 + 31 + 30 + 31 + 30 + 31)*24*60*60);
-				break;
-			case 9:
-				startTimeAsSeconds += ((31 + 28 + 31 + 30 + 31 + 30 + 31 + 31)*24*60*60);
-				break;
-			case 10:
-				startTimeAsSeconds += ((31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30)*24*60*60);
-				break;
-			case 11:
-				startTimeAsSeconds += ((31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31)*24*60*60);
-				break;
-			case 12:
-				startTimeAsSeconds += ((31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30)*24*60*60);
-				break;
-	
-		}
-		startTimeAsSeconds += (startTime[2] - 1) * 24 * 60 * 60;//adds seconds for the days
-		startTimeAsSeconds += startTime[3] * 60 * 60;
-		startTimeAsSeconds += startTime[4] * 60;
-		startTimeAsSeconds += startTime[5];
 		
-		this.endTimeAsSeconds += ((endTime[0] - 2021)*365*24*60*60);//adds a number of seconds for the year
-		switch (endTime[1]) {
-			case 1,3,5,7,8,10,12:
-				endTimeAsSeconds += (31*24*60*60);
-				break;
-			case 4,6,9,11:
-				endTimeAsSeconds += (30*24*60*60);
-				break;
-			case 2:
-				endTimeAsSeconds += (28*24*60*60);
-				break;	
-		}
-		
-		endTimeAsSeconds += endTime[2] * 24 * 60 * 60;
-		endTimeAsSeconds += endTime[3] * 60 * 60;
-		endTimeAsSeconds += endTime[4] * 60;
-		endTimeAsSeconds += endTime[5];
 	}
 }
